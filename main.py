@@ -4809,14 +4809,23 @@ else:
     st.markdown("<p style='text-align: right;'><b>🛢️ Liquid in Gas CarryOver Prediction (LICA Version 1.0)</b></p>", unsafe_allow_html=True)
 
     st.markdown("---")
+
+    col1 , col2 , col3 = st.columns([1,5,1])
+
+
     
-    if st.button("HEllo"):
+    with col2
 
-        st.session_state.log = 1
+    
+    
+        if st.button("Sign in using Google"):
+    
+            st.session_state.log = 1
+    
+            st.login("google")
+    
+            st.stop()
 
-        st.login("google")
-
-        st.stop()
 
 
 
