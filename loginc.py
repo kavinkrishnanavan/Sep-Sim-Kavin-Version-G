@@ -2,7 +2,7 @@ import Droplet as dplet
 
 def calli():
 
-  dp.loginp()
+  dplet.loginp()
   
 calli()
 
