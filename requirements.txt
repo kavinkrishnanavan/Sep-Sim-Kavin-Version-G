@@ -7,3 +7,5 @@ streamlit-pdf-viewer
 streamlit-oauth 
 google-auth
 extra-streamlit-components
+authlib
+
