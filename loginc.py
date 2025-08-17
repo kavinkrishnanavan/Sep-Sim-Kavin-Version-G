@@ -5,3 +5,5 @@ def calli():
   dp.loginp()
   
 calli()
+
+import Droplet as dp
