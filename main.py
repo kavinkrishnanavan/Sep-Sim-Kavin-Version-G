@@ -4789,30 +4789,32 @@ refresh_url = token_url
 revoke_url = "https://oauth2.googleapis.com/revoke"
 
 oauth2 = OAuth2Component(
-    client_id,
-    client_secret,
-    authorize_url,
-    token_url,
-    refresh_url,
-    revoke_url
+    client_id=client_id,
+    client_secret=client_secret,
+    authorize_url=authorize_url,
+    token_url=token_url,
+    refresh_url=refresh_url,
+    revoke_url=revoke_url,
 )
 
-if "token" not in st.session_state:
-    st.session_state.token = None
+if "google_token" not in st.session_state:
+    st.session_state["google_token"] = None
 
-if st.session_state.token is None:
+
+if st.session_state["google_token"] is None:
     result = oauth2.authorize_button(
         name="Sign in with Google",
-        icon="https://developers.google.com/identity/images/g-logo.png",  # Google logo
+        icon="https://developers.google.com/identity/images/g-logo.png",
         redirect_uri=redirect_uri,
-        scope="openid"
+        scope="openid email profile",
+        key="google_oauth"
     )
-    if result:
-        st.session_state.token = result
+
+    if result and "token" in result:
+        st.session_state["google_token"] = result["token"]
         st.rerun()
 else:
-    st.success("✅ Logged in with Google")
-    st.json(st.session_state.token)
+    st.success("✅ Logged in successfully with Google!")
 
 
 
