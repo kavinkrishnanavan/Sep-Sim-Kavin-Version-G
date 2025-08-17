@@ -9,6 +9,13 @@ import math # Import math for new calculations
 import Flowregime as fr # Import the new module
 from streamlit_pdf_viewer import pdf_viewer # Import the custom PDF viewer
 
+def out():
+    import streamlit as st
+    st.empty()
+    st.logout()
+    del st.session_state['log']
+    
+
 #@st.cache_data
 def create_plot_buffers(plot_data_original, plot_data_adjusted, plot_data_after_gravity, plot_data_after_mist_extractor):
     import matplotlib.pyplot as plt
@@ -4768,6 +4775,7 @@ elif page == "Manual":
 st.markdown(r"""
 ---
 """)
+
 
 
 
