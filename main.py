@@ -4773,9 +4773,6 @@ def passfr():
     """)
 
 
-def loginp():
-
-    st.login("google")
 
 
 from streamlit_oauth import OAuth2Component
@@ -4816,6 +4813,7 @@ if st.session_state.token is None:
 else:
     st.success("✅ Logged in with Google")
     st.json(st.session_state.token)
+
 
 
 
