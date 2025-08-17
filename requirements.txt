@@ -6,3 +6,4 @@ fpdf2
 streamlit-pdf-viewer
 streamlit-oauth 
 google-auth
+extra-streamlit-components
