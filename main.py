@@ -2824,7 +2824,7 @@ def passfr():
     
     
     st.sidebar.markdown(
-                "<div style='text-align: center; font-size:20px; font-weight:bold;'>SepSim V1.0</div>",
+                "<div style='text-align: center; font-size:20px; font-weight:bold;'>"+st.username["given_name"]+"</div>",
                 unsafe_allow_html=True
             )
     
@@ -4825,6 +4825,7 @@ else:
             st.login("google")
     
             st.stop()
+
 
 
 
