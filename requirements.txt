@@ -4,4 +4,5 @@ scipy
 matplotlib
 fpdf2
 streamlit-pdf-viewer
-streamlit-oauth google-auth
+streamlit-oauth 
+google-auth
