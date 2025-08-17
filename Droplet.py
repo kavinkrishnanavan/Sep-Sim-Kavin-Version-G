@@ -19,7 +19,7 @@ def out():
 
 def loginp():
 
-    st.login()
+    st.login("google")
     
 def passfr():
 
@@ -4782,6 +4782,7 @@ def passfr():
     st.markdown(r"""
     ---
     """)
+
 
 
 
