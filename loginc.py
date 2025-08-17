@@ -1,3 +1,7 @@
 import Droplet as dp
 
-dp.loginp()
+def calli():
+
+  dp.loginp()
+  
+calli()
