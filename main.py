@@ -4805,14 +4805,15 @@ if st.session_state.token is None:
         name="Sign in with Google",
         icon="https://developers.google.com/identity/images/g-logo.png",  # Google logo
         redirect_uri=redirect_uri,
-        scope="openid email profile"
+        scope="openid"
     )
-if result:
-    st.session_state.token = result
-    st.rerun()
+    if result:
+        st.session_state.token = result
+        st.rerun()
 else:
     st.success("✅ Logged in with Google")
     st.json(st.session_state.token)
+
 
 
 
