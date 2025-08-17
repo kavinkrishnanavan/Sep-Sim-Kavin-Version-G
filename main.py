@@ -4814,7 +4814,9 @@ if st.session_state["google_token"] is None:
         st.session_state["google_token"] = result["token"]
         st.rerun()
 else:
-    st.success("✅ Logged in successfully with Google!")
+    
+    passfr()
+
 
 
 
