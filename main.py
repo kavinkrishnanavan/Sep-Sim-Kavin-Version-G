@@ -4812,14 +4812,12 @@ else:
 
     col1 , col2 , col3 = st.columns([1,5,1])
 
+    with col1:
 
+        st.image("icon.png")
     
     with col2:
 
-        st.image("icon.png")
-
-    
-    
         if st.button("Sign in using Google"):
     
             st.session_state.log = 1
@@ -4827,6 +4825,7 @@ else:
             st.login("google")
     
             st.stop()
+
 
 
 
