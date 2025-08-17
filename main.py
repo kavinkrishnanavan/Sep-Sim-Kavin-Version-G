@@ -4782,13 +4782,10 @@ def passfr():
     """)
 
 
-
-
 import streamlit as st
 import requests
 from streamlit_oauth import OAuth2Component
 import extra_streamlit_components as stx
-import time
 
 # ----------------------------
 # Cookie Manager
@@ -4838,9 +4835,13 @@ def refresh_access_token(refresh_token: str):
         return resp.json()
     return None
 
+# ----------------------------
+# Your main app function
+# ----------------------------
+
 
 # ----------------------------
-# Try to load from cookies
+# Authentication flow
 # ----------------------------
 saved_username = cookie_manager.get("username")
 saved_refresh_token = cookie_manager.get("refresh_token")
@@ -4858,21 +4859,22 @@ if saved_username and saved_refresh_token:
             cookie_manager.delete("refresh_token")
             st.session_state.clear()
             st.rerun()
+
+        # Run your app
+        passfr()
+
     else:
         st.warning("⚠️ Session expired, please log in again.")
         cookie_manager.delete("username")
         cookie_manager.delete("refresh_token")
 
-# ----------------------------
-# If not logged in → show login button
-# ----------------------------
 elif "google_token" not in st.session_state or st.session_state["google_token"] is None:
     result = oauth2.authorize_button(
         name="Sign in with Google",
         icon="https://developers.google.com/identity/images/g-logo.png",
         redirect_uri=redirect_uri,
         scope="openid email profile",
-        extras_params={"access_type": "offline", "prompt": "consent"},  # ensures refresh_token
+        extras_params={"access_type": "offline", "prompt": "consent"},
         key="google_oauth"
     )
 
@@ -4900,12 +4902,12 @@ elif "google_token" not in st.session_state or st.session_state["google_token"] 
 
             st.success(f"✅ Logged in as {username}")
             st.image(user_info.get("picture"))
+
+            # Run your app after login
+            passfr()
         else:
             st.error("❌ Failed to fetch user info")
 
-# ----------------------------
-# If logged in already this session
-# ----------------------------
 else:
     username = st.session_state.get("username", "Unknown")
     st.success(f"✅ Logged in as {username}")
@@ -4915,8 +4917,10 @@ else:
         st.session_state.clear()
         st.rerun()
 
-        
+    # Run your app if session is still valid
     passfr()
+
+
 
 
 
