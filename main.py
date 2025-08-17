@@ -4795,6 +4795,9 @@ def get_cookie_manager():
 
 cookie_manager = get_cookie_manager()
 
+# IMPORTANT: force initialization (avoids blank page on first load)
+cookies = cookie_manager.get_all()
+
 # ----------------------------
 # Load secrets from st.secrets
 # ----------------------------
@@ -4847,7 +4850,6 @@ saved_username = cookie_manager.get("username")
 saved_refresh_token = cookie_manager.get("refresh_token")
 
 if saved_username and saved_refresh_token:
-    # Try refreshing token silently
     token_data = refresh_access_token(saved_refresh_token)
     if token_data and "access_token" in token_data:
         st.session_state["google_token"] = token_data
@@ -4860,9 +4862,7 @@ if saved_username and saved_refresh_token:
             st.session_state.clear()
             st.rerun()
 
-        # Run your app
         passfr()
-
     else:
         st.warning("⚠️ Session expired, please log in again.")
         cookie_manager.delete("username")
@@ -4895,7 +4895,7 @@ elif "google_token" not in st.session_state or st.session_state["google_token"] 
 
             st.session_state["username"] = username
 
-            # Save in cookies for persistence
+            # Save in cookies
             cookie_manager.set("username", username)
             if "refresh_token" in token_data:
                 cookie_manager.set("refresh_token", token_data["refresh_token"])
@@ -4903,22 +4903,25 @@ elif "google_token" not in st.session_state or st.session_state["google_token"] 
             st.success(f"✅ Logged in as {username}")
             st.image(user_info.get("picture"))
 
-            # Run your app after login
             passfr()
         else:
             st.error("❌ Failed to fetch user info")
 
 else:
-    username = st.session_state.get("username", "Unknown")
-    st.success(f"✅ Logged in as {username}")
-    if st.button("Logout"):
-        cookie_manager.delete("username")
-        cookie_manager.delete("refresh_token")
-        st.session_state.clear()
-        st.rerun()
+    # If session still alive in memory
+    username = st.session_state.get("username")
+    if username:
+        st.success(f"✅ Logged in as {username}")
+        if st.button("Logout"):
+            cookie_manager.delete("username")
+            cookie_manager.delete("refresh_token")
+            st.session_state.clear()
+            st.rerun()
+        passfr()
+    else:
+        st.info("👆 Please log in to continue")
 
-    # Run your app if session is still valid
-    passfr()
+
 
 
 
