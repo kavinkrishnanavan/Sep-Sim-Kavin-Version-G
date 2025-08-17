@@ -1,4 +1,4 @@
-import Droplet as dplet
+import main as dplet
 
 def calli():
 
@@ -6,4 +6,4 @@ def calli():
   
 calli()
 
-import Droplet as dplet
+import main as dplet
