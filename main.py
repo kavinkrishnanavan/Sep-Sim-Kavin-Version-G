@@ -11,7 +11,16 @@ from streamlit_pdf_viewer import pdf_viewer # Import the custom PDF viewer
 
     
 def passfr():
-
+    import streamlit as st
+    import numpy as np
+    from scipy.special import erf
+    import matplotlib.pyplot as plt
+    from fpdf import FPDF # Import FPDF for PDF generation
+    import io # For handling in-memory image data
+    import pandas as pd # Import pandas for data table
+    import math # Import math for new calculations
+    import Flowregime as fr # Import the new module
+    from streamlit_pdf_viewer import pdf_viewer # Import the custom PDF viewer
     #@st.cache_data
     def create_plot_buffers(plot_data_original, plot_data_adjusted, plot_data_after_gravity, plot_data_after_mist_extractor):
         import matplotlib.pyplot as plt
@@ -4816,6 +4825,7 @@ if st.session_state["google_token"] is None:
 else:
     
     passfr()
+
 
 
 
