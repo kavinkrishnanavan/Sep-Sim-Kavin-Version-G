@@ -16,6 +16,10 @@ def out():
     st.empty()
     st.logout()
     del st.session_state['log']
+
+def loginp():
+
+    st.login()
     
 def passfr():
 
