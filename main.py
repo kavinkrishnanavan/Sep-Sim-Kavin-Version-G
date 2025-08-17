@@ -8,14 +8,7 @@ import pandas as pd # Import pandas for data table
 import math # Import math for new calculations
 import Flowregime as fr # Import the new module
 from streamlit_pdf_viewer import pdf_viewer # Import the custom PDF viewer
-import function_handler as extra
-import loginc as logc
 
-def out():
-    import streamlit as st
-    st.empty()
-    st.logout()
-    del st.session_state['log']
     
 def passfr():
 
@@ -4783,6 +4776,48 @@ def passfr():
 def loginp():
 
     st.login("google")
+
+
+from streamlit_oauth import OAuth2Component
+
+# Load secrets
+client_id = st.secrets["google"]["client_id"]
+client_secret = st.secrets["google"]["client_secret"]
+redirect_uri = st.secrets["google"]["redirect_uri"]
+
+# Google OAuth endpoints
+authorize_url = "https://accounts.google.com/o/oauth2/v2/auth"
+token_url = "https://oauth2.googleapis.com/token"
+refresh_url = token_url
+revoke_url = "https://oauth2.googleapis.com/revoke"
+
+oauth2 = OAuth2Component(
+    client_id,
+    client_secret,
+    authorize_url,
+    token_url,
+    refresh_url,
+    revoke_url
+)
+
+if "token" not in st.session_state:
+    st.session_state.token = None
+
+if st.session_state.token is None:
+    result = oauth2.authorize_button(
+        name="Sign in with Google",
+        icon="https://developers.google.com/identity/images/g-logo.png",  # Google logo
+        redirect_uri=redirect_uri,
+        scope="openid email profile"
+    )
+    if result:
+        st.session_state.token = result
+        st.rerun()
+else:
+    st.success("✅ Logged in with Google")
+    st.json(st.session_state.token)
+
+
 
 
 
