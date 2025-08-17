@@ -4784,14 +4784,38 @@ def passfr():
 
 import streamlit as st
 
-st.login("google")
+import extra
+
+def gogoyu():
+    passfr()
+
 
 if st.user.is_logged_in:
-    # Code here runs just after login completes successfully
-    st.write(f"Hello, {st.user.name}!")
-    # Your post-login code here
+
+
+    if "log" not in st.session_state:
+
+        st.session_state.log = 1
+        gogoyu()
+    else:
+
+        gogoyu()
+
 else:
-    st.write("Please log in.")
+    st.markdown("<p style='text-align: right;'><b>🛢️ Liquid in Gas CarryOver Prediction (LICA Version 1.0)</b></p>", unsafe_allow_html=True)
+
+    st.markdown("---")
+    
+    if st.button("HEllo"):
+
+        st.session_state.log = 1
+
+        st.login("google")
+
+        st.stop()
+
+
+
 
 
 
