@@ -4814,7 +4814,7 @@ else:
 
 
     
-    with col2
+    with col2:
 
     
     
@@ -4825,6 +4825,7 @@ else:
             st.login("google")
     
             st.stop()
+
 
 
 
