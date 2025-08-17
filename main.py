@@ -2821,10 +2821,13 @@ def passfr():
     #with tit1:
         #st.header("🛢️ Oil and Gas Separator")
     
-    
+    st.sidebar.markdown(
+                "<div style='text-align: center; font-size:14px; font-weight:bold;'>Hi "+st.user.name+"!</div>",
+                unsafe_allow_html=True
+            ) 
     
     st.sidebar.markdown(
-                "<div style='text-align: center; font-size:20px; font-weight:bold;'>"+st.user.name+"</div>",
+                "<div style='text-align: center; font-size:20px; font-weight:bold;'>SepSim V1.0</div>",
                 unsafe_allow_html=True
             )
     
@@ -4825,6 +4828,7 @@ else:
             st.login("google")
     
             st.stop()
+
 
 
 
