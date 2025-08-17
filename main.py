@@ -4842,10 +4842,11 @@ else:
 
     # Use the stored name anywhere
     if st.session_state["username"]:
-        st.success(f"✅ Logged in as {st.session_state['username']}")
+       #st.success(f"✅ Logged in as {st.session_state['username']}")
         st.write(f"Hello, {st.session_state['username']} 👋")
         
     passfr()
+
 
 
 
