@@ -9,6 +9,11 @@ import math # Import math for new calculations
 import Flowregime as fr # Import the new module
 from streamlit_pdf_viewer import pdf_viewer # Import the custom PDF viewer
 
+def out():
+    import streamlit as st
+    st.empty()
+    st.logout()
+    del st.session_state['log']
     
 def passfr():
     import streamlit as st
@@ -2858,6 +2863,7 @@ def passfr():
     
     st.sidebar.markdown("---")
     #st.sidebar.caption("Connect with me")
+    st.sidebar.button("Logout" , on_click= out)
     st.sidebar.caption("Feel free to connect with me on LinkedIn for further details or collaboration.")
     st.sidebar.markdown("[![My LinkedIn Profile](https://img.shields.io/badge/LinkedIn-Profile-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/navaneethakrishnan-kannan/)")
     
@@ -4811,6 +4817,7 @@ else:
         st.login("google")
 
         st.stop()
+
 
 
 
