@@ -4785,6 +4785,7 @@ def passfr():
 
 
 from streamlit_oauth import OAuth2Component
+import requests
 
 # Load secrets
 client_id = st.secrets["google"]["client_id"]
@@ -4794,7 +4795,7 @@ redirect_uri = st.secrets["google"]["redirect_uri"]
 # Google OAuth endpoints
 authorize_url = "https://accounts.google.com/o/oauth2/v2/auth"
 token_url = "https://oauth2.googleapis.com/token"
-refresh_url = token_url
+refresh_url = "https://oauth2.googleapis.com/token"
 revoke_url = "https://oauth2.googleapis.com/revoke"
 
 oauth2 = OAuth2Component(
@@ -4810,42 +4811,81 @@ if "google_token" not in st.session_state:
     st.session_state["google_token"] = None
 if "username" not in st.session_state:
     st.session_state["username"] = None
-    
+if "refresh_token" not in st.session_state:
+    st.session_state["refresh_token"] = None
+
+def fetch_user_info(access_token):
+    """Get user info from Google"""
+    resp = requests.get(
+        "https://www.googleapis.com/oauth2/v2/userinfo",
+        headers={"Authorization": f"Bearer {access_token}"}
+    )
+    return resp.json() if resp.status_code == 200 else None
+
+def refresh_access_token(refresh_token):
+    """Refresh access token using refresh token"""
+    data = {
+        "client_id": client_id,
+        "client_secret": client_secret,
+        "refresh_token": refresh_token,
+        "grant_type": "refresh_token"
+    }
+    resp = requests.post(refresh_url, data=data)
+    return resp.json() if resp.status_code == 200 else None
+
+
+
+
 if st.session_state["google_token"] is None:
+    # Show login button
     result = oauth2.authorize_button(
         name="Sign in with Google",
         icon="https://developers.google.com/identity/images/g-logo.png",
         redirect_uri=redirect_uri,
         scope="openid email profile",
+        extras_params={"access_type": "offline", "prompt": "consent"},  # ensures refresh_token
         key="google_oauth"
     )
 
     if result and "token" in result:
         st.session_state["google_token"] = result["token"]
+
+        # Save refresh_token if available
+        if "refresh_token" in result["token"]:
+            st.session_state["refresh_token"] = result["token"]["refresh_token"]
+
         st.rerun()
+
 else:
-    import requests
+    # Try fetching user info
+    access_token = st.session_state["google_token"].get("access_token")
+    user_info = fetch_user_info(access_token)
 
-    if st.session_state["username"] is None:
-        # Fetch once from Google
-        access_token = st.session_state["google_token"]["access_token"]
-        resp = requests.get(
-            "https://www.googleapis.com/oauth2/v2/userinfo",
-            headers={"Authorization": f"Bearer {access_token}"}
-        )
+    if not user_info and st.session_state["refresh_token"]:
+        # Access token expired, refresh it
+        new_token = refresh_access_token(st.session_state["refresh_token"])
+        if new_token and "access_token" in new_token:
+            st.session_state["google_token"]["access_token"] = new_token["access_token"]
+            user_info = fetch_user_info(new_token["access_token"])
 
-        if resp.status_code == 200:
-            user_info = resp.json()
-            st.session_state["username"] = user_info.get("name")  # ✅ only name
-        else:
-            st.error("Failed to fetch user info")
-
-    # Use the stored name anywhere
-    if st.session_state["username"]:
+    if user_info:
+        st.session_state["username"] = user_info.get("name")
        #st.success(f"✅ Logged in as {st.session_state['username']}")
         st.write(f"Hello, {st.session_state['username']} 👋")
+
+        # Logout button
+        if st.button("Logout"):
+            st.session_state["google_token"] = None
+            st.session_state["username"] = None
+            st.session_state["refresh_token"] = None
+            st.rerun()
+    else:
+        st.error("⚠️ Failed to fetch user info. Please sign in again.")
+        st.session_state["google_token"] = None
+        st.session_state["username"] = None
         
     passfr()
+
 
 
 
