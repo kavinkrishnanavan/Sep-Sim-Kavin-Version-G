@@ -4784,10 +4784,23 @@ def passfr():
 
 
 
-from streamlit_oauth import OAuth2Component
+import streamlit as st
 import requests
+from streamlit_oauth import OAuth2Component
+import extra_streamlit_components as stx
+import time
 
-# Load secrets
+# ----------------------------
+# Cookie Manager
+# ----------------------------
+def get_cookie_manager():
+    return stx.CookieManager()
+
+cookie_manager = get_cookie_manager()
+
+# ----------------------------
+# Load secrets from st.secrets
+# ----------------------------
 client_id = st.secrets["google"]["client_id"]
 client_secret = st.secrets["google"]["client_secret"]
 redirect_uri = st.secrets["google"]["redirect_uri"]
@@ -4795,9 +4808,12 @@ redirect_uri = st.secrets["google"]["redirect_uri"]
 # Google OAuth endpoints
 authorize_url = "https://accounts.google.com/o/oauth2/v2/auth"
 token_url = "https://oauth2.googleapis.com/token"
-refresh_url = "https://oauth2.googleapis.com/token"
+refresh_url = token_url
 revoke_url = "https://oauth2.googleapis.com/revoke"
 
+# ----------------------------
+# OAuth2 Component
+# ----------------------------
 oauth2 = OAuth2Component(
     client_id,
     client_secret,
@@ -4807,37 +4823,50 @@ oauth2 = OAuth2Component(
     revoke_url
 )
 
-if "google_token" not in st.session_state:
-    st.session_state["google_token"] = None
-if "username" not in st.session_state:
-    st.session_state["username"] = None
-if "refresh_token" not in st.session_state:
-    st.session_state["refresh_token"] = None
-
-def fetch_user_info(access_token):
-    """Get user info from Google"""
-    resp = requests.get(
-        "https://www.googleapis.com/oauth2/v2/userinfo",
-        headers={"Authorization": f"Bearer {access_token}"}
-    )
-    return resp.json() if resp.status_code == 200 else None
-
-def refresh_access_token(refresh_token):
-    """Refresh access token using refresh token"""
-    data = {
+# ----------------------------
+# Helper: Refresh access token
+# ----------------------------
+def refresh_access_token(refresh_token: str):
+    payload = {
         "client_id": client_id,
         "client_secret": client_secret,
         "refresh_token": refresh_token,
         "grant_type": "refresh_token"
     }
-    resp = requests.post(refresh_url, data=data)
-    return resp.json() if resp.status_code == 200 else None
+    resp = requests.post(refresh_url, data=payload)
+    if resp.status_code == 200:
+        return resp.json()
+    return None
 
 
+# ----------------------------
+# Try to load from cookies
+# ----------------------------
+saved_username = cookie_manager.get("username")
+saved_refresh_token = cookie_manager.get("refresh_token")
 
+if saved_username and saved_refresh_token:
+    # Try refreshing token silently
+    token_data = refresh_access_token(saved_refresh_token)
+    if token_data and "access_token" in token_data:
+        st.session_state["google_token"] = token_data
+        st.session_state["username"] = saved_username
 
-if st.session_state["google_token"] is None:
-    # Show login button
+        st.success(f"✅ Welcome back, {saved_username}!")
+        if st.button("Logout"):
+            cookie_manager.delete("username")
+            cookie_manager.delete("refresh_token")
+            st.session_state.clear()
+            st.rerun()
+    else:
+        st.warning("⚠️ Session expired, please log in again.")
+        cookie_manager.delete("username")
+        cookie_manager.delete("refresh_token")
+
+# ----------------------------
+# If not logged in → show login button
+# ----------------------------
+elif "google_token" not in st.session_state or st.session_state["google_token"] is None:
     result = oauth2.authorize_button(
         name="Sign in with Google",
         icon="https://developers.google.com/identity/images/g-logo.png",
@@ -4848,43 +4877,47 @@ if st.session_state["google_token"] is None:
     )
 
     if result and "token" in result:
-        st.session_state["google_token"] = result["token"]
+        token_data = result["token"]
+        st.session_state["google_token"] = token_data
 
-        # Save refresh_token if available
-        if "refresh_token" in result["token"]:
-            st.session_state["refresh_token"] = result["token"]["refresh_token"]
+        # Get user info
+        access_token = token_data["access_token"]
+        resp = requests.get(
+            "https://www.googleapis.com/oauth2/v2/userinfo",
+            headers={"Authorization": f"Bearer {access_token}"}
+        )
 
+        if resp.status_code == 200:
+            user_info = resp.json()
+            username = user_info.get("name")
+
+            st.session_state["username"] = username
+
+            # Save in cookies for persistence
+            cookie_manager.set("username", username)
+            if "refresh_token" in token_data:
+                cookie_manager.set("refresh_token", token_data["refresh_token"])
+
+            st.success(f"✅ Logged in as {username}")
+            st.image(user_info.get("picture"))
+        else:
+            st.error("❌ Failed to fetch user info")
+
+# ----------------------------
+# If logged in already this session
+# ----------------------------
+else:
+    username = st.session_state.get("username", "Unknown")
+    st.success(f"✅ Logged in as {username}")
+    if st.button("Logout"):
+        cookie_manager.delete("username")
+        cookie_manager.delete("refresh_token")
+        st.session_state.clear()
         st.rerun()
 
-else:
-    # Try fetching user info
-    access_token = st.session_state["google_token"].get("access_token")
-    user_info = fetch_user_info(access_token)
-
-    if not user_info and st.session_state["refresh_token"]:
-        # Access token expired, refresh it
-        new_token = refresh_access_token(st.session_state["refresh_token"])
-        if new_token and "access_token" in new_token:
-            st.session_state["google_token"]["access_token"] = new_token["access_token"]
-            user_info = fetch_user_info(new_token["access_token"])
-
-    if user_info:
-        st.session_state["username"] = user_info.get("name")
-       #st.success(f"✅ Logged in as {st.session_state['username']}")
-        st.write(f"Hello, {st.session_state['username']} 👋")
-
-        # Logout button
-        if st.button("Logout"):
-            st.session_state["google_token"] = None
-            st.session_state["username"] = None
-            st.session_state["refresh_token"] = None
-            st.rerun()
-    else:
-        st.error("⚠️ Failed to fetch user info. Please sign in again.")
-        st.session_state["google_token"] = None
-        st.session_state["username"] = None
         
     passfr()
+
 
 
 
