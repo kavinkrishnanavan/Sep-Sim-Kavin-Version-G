@@ -4794,7 +4794,7 @@ oauth2 = OAuth2Component(
     authorize_url=authorize_url,
     token_url=token_url,
     refresh_url=refresh_url,
-    revoke_url=revoke_url,
+    revoke_url=revoke_url
 )
 
 if "google_token" not in st.session_state:
@@ -4815,6 +4815,7 @@ if st.session_state["google_token"] is None:
         st.rerun()
 else:
     st.success("✅ Logged in successfully with Google!")
+
 
 
 
