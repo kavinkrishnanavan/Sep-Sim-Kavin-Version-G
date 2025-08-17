@@ -4808,11 +4808,12 @@ if st.session_state.token is None:
         scope="openid email profile"
     )
 if result:
-        st.session_state.token = result
-        st.rerun()
+    st.session_state.token = result
+    st.rerun()
 else:
     st.success("✅ Logged in with Google")
     st.json(st.session_state.token)
+
 
 
 
