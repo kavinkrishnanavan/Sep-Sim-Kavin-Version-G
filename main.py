@@ -4808,8 +4808,9 @@ oauth2 = OAuth2Component(
 
 if "google_token" not in st.session_state:
     st.session_state["google_token"] = None
-
-
+if "username" not in st.session_state:
+    st.session_state["username"] = None
+    
 if st.session_state["google_token"] is None:
     result = oauth2.authorize_button(
         name="Sign in with Google",
@@ -4823,8 +4824,29 @@ if st.session_state["google_token"] is None:
         st.session_state["google_token"] = result["token"]
         st.rerun()
 else:
-    
+    import requests
+
+     if st.session_state["username"] is None:
+        # Fetch once from Google
+        access_token = st.session_state["google_token"]["access_token"]
+        resp = requests.get(
+            "https://www.googleapis.com/oauth2/v2/userinfo",
+            headers={"Authorization": f"Bearer {access_token}"}
+        )
+
+        if resp.status_code == 200:
+            user_info = resp.json()
+            st.session_state["username"] = user_info.get("name")  # ✅ only name
+        else:
+            st.error("Failed to fetch user info")
+
+    # Use the stored name anywhere
+    if st.session_state["username"]:
+        st.success(f"✅ Logged in as {st.session_state['username']}")
+        st.write(f"Hello, {st.session_state['username']} 👋")
+        
     passfr()
+
 
 
 
