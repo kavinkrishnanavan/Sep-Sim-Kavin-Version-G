@@ -4807,12 +4807,13 @@ if st.session_state.token is None:
         redirect_uri=redirect_uri,
         scope="openid email profile"
     )
-    if result:
+if result:
         st.session_state.token = result
         st.rerun()
 else:
     st.success("✅ Logged in with Google")
     st.json(st.session_state.token)
+
 
 
 
