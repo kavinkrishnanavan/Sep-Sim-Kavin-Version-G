@@ -4846,7 +4846,7 @@ else:
         #st.markdown("![](Sep_glow_loop.gif)")
         
         # Wrap your checkbox label with tooltip
-        st.markdown(
+    st.markdown(
             """
             <label class="tooltip">
                💧 SepSim v1.0 
@@ -4881,6 +4881,7 @@ else:
             st.stop()
             
     
+
 
 
 
