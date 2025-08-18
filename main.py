@@ -4810,7 +4810,7 @@ if st.user.is_logged_in:
 
 else:
     st.set_page_config(layout="wide", page_title="SepSim", page_icon = "logo.png")
-    col1, col2, col3 = st.columns([5, 1, 5])  # Adjust the ratios as needed
+    col1, col2, col3 = st.columns([5, 3, 5])  # Adjust the ratios as needed
     
     with col2:
             st.markdown("---")        
@@ -4847,6 +4847,7 @@ else:
             st.stop()
             
     
+
 
 
 
