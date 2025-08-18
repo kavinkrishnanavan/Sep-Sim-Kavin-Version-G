@@ -4814,14 +4814,20 @@ else:
     st.markdown("---")
 
     col1 , col2 , col3 = st.columns(3)
+    with col2:
+
+        st.image("web.png" , width=50)
+    
 
    # with col1:
+
+    col1 , col2 , col3 = st.columns(3)
 
         
     
     with col2:
 
-        st.image("web.png" , width=50)
+
         
         if st.button("Sign in using Google"):
     
@@ -4830,6 +4836,7 @@ else:
             st.login("google")
     
             st.stop()
+
 
 
 
