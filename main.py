@@ -4821,7 +4821,7 @@ else:
 
    # with col1:
 
-    col1 , col2 , col3 = st.columns([5,3,5])
+    col1 , col2 , col3 = st.columns([3,5,3])
 
         
     
@@ -4834,6 +4834,7 @@ else:
             st.stop()
             
     
+
 
 
 
