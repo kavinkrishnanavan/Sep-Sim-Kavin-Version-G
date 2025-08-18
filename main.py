@@ -4821,7 +4821,7 @@ else:
 
    # with col1:
 
-    col1 , col2 , col3 = st.columns(3)
+    col1 , col2 , col3 = st.columns([5,1,5])
 
         
     
@@ -4836,6 +4836,7 @@ else:
             st.login("google")
     
             st.stop()
+
 
 
 
