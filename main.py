@@ -4824,9 +4824,10 @@ else:
                     )   
                 # Wrap your checkbox label with tooltip
             st.image("Sep1.png", caption="",  use_container_width=True)
-            
+            st.markdown("") 
+            st.markdown("") 
 
-    col1 , col2 , col3 = st.columns([5,1,5])
+    col1 , col2 , col3 = st.columns([8,1,8])
     with col2:
 
         st.image("web.png" ,caption="",  use_container_width=True)
@@ -4847,6 +4848,7 @@ else:
             st.stop()
             
     
+
 
 
 
