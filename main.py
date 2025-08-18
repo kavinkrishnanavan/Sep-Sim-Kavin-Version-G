@@ -4821,7 +4821,7 @@ else:
 
    # with col1:
 
-    col1 , col2 , col3 = st.columns([5,1,5])
+    col1 , col2 , col3 = st.columns([5,3,5])
 
         
     
@@ -4829,13 +4829,14 @@ else:
 
 
         
-        if st.button("Sign in using Google"):
+        if st.button("Sign in"):
     
             st.session_state.log = 1
     
             st.login("google")
     
             st.stop()
+
 
 
 
