@@ -4828,14 +4828,12 @@ else:
     with col2:
 
 
-        
-        if st.button("Sign in"):
-    
+        if st.button("Sign in using Google", use_container_width=True):  # stretches inside col2
             st.session_state.log = 1
-    
             st.login("google")
-    
             st.stop()
+            
+    
 
 
 
