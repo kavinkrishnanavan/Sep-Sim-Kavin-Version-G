@@ -4809,7 +4809,7 @@ if st.user.is_logged_in:
         gogoyu()
 
 else:
-    col1, col2, col3 = st.columns([5, 5, 5])  # Adjust the ratios as needed
+    col1, col2, col3 = st.columns([1, 5, 1])  # Adjust the ratios as needed
     
     with col2:
             st.markdown("---")        
@@ -4818,7 +4818,7 @@ else:
         #st.image(r"C:\Users\annav\Downloads\Sep_glow_loop.gif", width=150)
         #st.markdown("![](Sep_glow_loop.gif)")
             st.markdown(
-                        "<div style='text-align: center; font-size:20px; font-weight:bold;'>💧 SepSim v1.0 </div>",
+                        "<div style='text-align: center; font-size:28px; font-weight:bold;'>SepSim v1.0 </div>",
                         unsafe_allow_html=True
                     )   
                 # Wrap your checkbox label with tooltip
@@ -4846,6 +4846,7 @@ else:
             st.stop()
             
     
+
 
 
 
