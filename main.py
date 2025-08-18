@@ -4809,8 +4809,55 @@ if st.user.is_logged_in:
         gogoyu()
 
 else:
-    st.markdown("<p style='text-align: right;'><b>🛢️ Liquid in Gas CarryOver Prediction (LICA Version 1.0)</b></p>", unsafe_allow_html=True)
-
+    st.markdown(
+            """
+            <style>
+            .tooltip {
+            position: relative; display: inline-block; cursor: pointer; font-weight: bold; color: Grey;
+            }
+    
+            .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; 
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 12px;
+            }
+    
+            .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+        #st.image(r"C:\Users\annav\Downloads\Sep_glow_loop.gif", width=150)
+        #st.markdown("![](Sep_glow_loop.gif)")
+        
+        # Wrap your checkbox label with tooltip
+        st.markdown(
+            """
+            <label class="tooltip">
+               💧 SepSim v1.0 
+                <span class="tooltiptext">
+                    20.08.2025 - <b>SepSim v1.0</b> - Initial Release<br>               
+                </span>
+            </label>
+            """,
+            unsafe_allow_html=True
+        )
+    
     st.markdown("---")
 
     col1 , col2 , col3 = st.columns([5,1,5])
@@ -4834,6 +4881,7 @@ else:
             st.stop()
             
     
+
 
 
 
