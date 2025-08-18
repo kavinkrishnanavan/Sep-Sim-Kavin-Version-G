@@ -4817,7 +4817,7 @@ else:
 
     with col1:
 
-        st.image("icon.png" , width=50)
+        st.image("icon.png" , width=30)
     
     with col2:
 
@@ -4828,6 +4828,7 @@ else:
             st.login("google")
     
             st.stop()
+
 
 
 
