@@ -4813,7 +4813,7 @@ else:
 
     st.markdown("---")
 
-    col1 , col2 , col3 = st.columns(3)
+    col1 , col2 , col3 = st.columns([5,1,5])
     with col2:
 
         st.image("web.png" ,caption="",  use_container_width=True)
@@ -4836,6 +4836,7 @@ else:
             st.login("google")
     
             st.stop()
+
 
 
 
