@@ -4816,7 +4816,7 @@ else:
     col1 , col2 , col3 = st.columns(3)
     with col2:
 
-        st.image("web.png" , width=50)
+        st.image("web.png" ,caption="",  use_container_width=True)
     
 
    # with col1:
@@ -4836,6 +4836,7 @@ else:
             st.login("google")
     
             st.stop()
+
 
 
 
