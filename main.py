@@ -4827,7 +4827,7 @@ else:
             st.markdown("") 
             st.markdown("") 
 
-    col1 , col2 , col3 = st.columns([8,1,8])
+    col1 , col2 , col3 = st.columns([10,1,10])
     with col2:
 
         st.image("web.png" ,caption="",  use_container_width=True)
@@ -4848,6 +4848,7 @@ else:
             st.stop()
             
     
+
 
 
 
