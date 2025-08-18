@@ -4821,7 +4821,7 @@ else:
     
     with col2:
 
-        st.image("web.png" , width=200)
+        st.image("web.png" , width=50)
         
         if st.button("Sign in using Google"):
     
@@ -4830,6 +4830,7 @@ else:
             st.login("google")
     
             st.stop()
+
 
 
 
