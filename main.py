@@ -4813,7 +4813,7 @@ else:
     
     with col2:
             st.markdown("---")        
-            st.sidebar.image("Sep1.png", caption="",  use_container_width=True)
+            
     
         #st.image(r"C:\Users\annav\Downloads\Sep_glow_loop.gif", width=150)
         #st.markdown("![](Sep_glow_loop.gif)")
@@ -4822,7 +4822,7 @@ else:
                         unsafe_allow_html=True
                     )   
                 # Wrap your checkbox label with tooltip
-            
+            st.image("Sep1.png", caption="",  use_container_width=True)
             st.markdown("---")
 
     col1 , col2 , col3 = st.columns([5,1,5])
@@ -4846,6 +4846,7 @@ else:
             st.stop()
             
     
+
 
 
 
